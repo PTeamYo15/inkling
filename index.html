@@ -1,0 +1,367 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Inkling</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400..700&display=swap">
+<style>
+:root{--bg:#f2f5fa;--fg:#17202e;--cd:#fff;--ac:#1f5eff;--on:#fff;--mu:#566074;--bd:#cfd7e4;--ok:#137a3a;--no:#b42318}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){color-scheme:dark;--bg:#1c1c1c;--fg:#e8e8e8;--cd:#2a2a2a;--ac:#9ab6ec;--on:#1c1c1c;--mu:#a3a3a3;--bd:#404040;--ok:#6fcf8f;--no:#f08a82}}
+:root[data-theme=dark]{color-scheme:dark;--bg:#1c1c1c;--fg:#e8e8e8;--cd:#2a2a2a;--ac:#9ab6ec;--on:#1c1c1c;--mu:#a3a3a3;--bd:#404040;--ok:#6fcf8f;--no:#f08a82}
+*{box-sizing:border-box}body{margin:0;font:16px/1.5 "Google Sans",system-ui,-apple-system,"Segoe UI",sans-serif;background:var(--bg);color:var(--fg)}
+main{max-width:760px;margin:0 auto;padding:16px}h1,h2{margin:.4em 0;line-height:1.2}
+button,input,select,textarea{font:inherit;color:inherit}
+button,a.btn{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 14px;border:1px solid var(--bd);border-radius:10px;background:var(--cd);color:var(--fg);cursor:pointer;text-decoration:none}
+a{color:var(--ac)}.p{background:var(--ac)!important;color:var(--on)!important;border-color:var(--ac)!important}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:10px 0}.sp{flex:1}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin:10px 0}
+input,select,textarea{width:100%;padding:10px;border:1px solid var(--bd);border-radius:10px;background:var(--cd)}
+input[type=radio],input[type=checkbox]{width:auto}label{display:block;flex:1;min-width:160px}
+.set{display:flex;justify-content:space-between;gap:8px;padding:14px;margin:6px 0;border:1px solid var(--bd);border-radius:12px;background:var(--cd);color:var(--fg);text-decoration:none}
+.sr{display:flex;gap:6px;align-items:center}.sr .set{flex:1;margin:6px 0}.mu{color:var(--mu)}.ok{color:var(--ok)}.no{color:var(--no)}
+.fc{display:flex;align-items:center;justify-content:center;text-align:center;min-height:250px;margin:14px 0;padding:24px;font-size:1.6rem;border:1px solid var(--bd);border-top:3px solid var(--no);border-radius:6px;background:repeating-linear-gradient(transparent 0 31px,color-mix(in srgb,var(--ac) 25%,transparent) 31px 32px),var(--cd);cursor:pointer;user-select:none}
+.fw{position:relative;margin:14px 0;perspective:1200px}
+.fc3{position:relative;height:320px;transition:transform .45s;transform-style:preserve-3d;cursor:pointer;border-radius:16px}.fc3.fl{transform:rotateX(180deg)}
+.face{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;padding:56px 28px 28px;font-size:var(--fz,1.7rem);line-height:1.35;background:var(--cd);border-radius:16px;box-shadow:0 2px 14px rgba(0,0,0,.2);backface-visibility:hidden;-webkit-backface-visibility:hidden;overflow:auto}.bk{transform:rotateX(180deg)}.face{flex-direction:column}.ci{max-width:100%;max-height:160px;border-radius:8px;margin-bottom:12px}.th{width:36px;height:36px;object-fit:cover;border-radius:6px;vertical-align:middle}
+.ct{position:absolute;top:6px;left:8px;right:8px;display:flex;justify-content:space-between;pointer-events:none}.ct button{pointer-events:auto;border:0;background:transparent;font-size:1.3rem;min-width:44px}
+.nav{justify-content:center;gap:28px}.rd{width:56px;height:56px;padding:0;border-radius:50%;font-size:1.4rem}
+@media(prefers-reduced-motion:reduce){.fc3{transition:none}}
+.cr{display:grid;grid-template-columns:24px 1fr 1fr 44px 44px;gap:6px;margin:6px 0;align-items:center}
+.tr{display:flex;gap:6px;align-items:center;padding:8px 0;border-bottom:1px solid var(--bd)}.tr div{flex:1}
+.opt{display:block;width:100%;margin:6px 0;min-height:48px;text-align:left}.okb{border-color:var(--ok)!important}.nob{border-color:var(--no)!important}
+.mg{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px}.tile{min-height:72px}.sel{outline:3px solid var(--ac)}.gone{opacity:.3}.bad{border-color:var(--no)}
+.ch{display:flex;gap:8px;align-items:center;margin:4px 0}fieldset{border:1px solid var(--bd);border-radius:12px;margin:10px 0}
+progress{width:100%}.bn{padding:10px;border:1px solid var(--ac);border-radius:10px;margin:10px 0}
+:focus-visible{outline:3px solid var(--ac);outline-offset:2px}
+.top{position:sticky;top:0;z-index:5;background:var(--cd);border-bottom:1px solid var(--bd)}.top .in{max-width:760px;margin:0 auto;padding:8px 16px;display:flex;gap:8px;align-items:center}
+.logo{font-size:1.4rem;font-weight:800;color:var(--ac);text-decoration:none;letter-spacing:-.5px}
+button,a.btn{transition:border-color .15s}button:hover,a.btn:hover{border-color:var(--ac)}
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px}
+.tile2{display:flex;flex-direction:column;border:1px solid var(--bd);border-radius:12px;background:var(--cd);padding:12px}.tile2:hover,.mode:hover{border-color:var(--ac);transform:translateY(-3px);box-shadow:0 6px 14px rgba(0,0,0,.15)}.tile2,.mode{transition:transform .15s,box-shadow .15s,border-color .15s}
+.tl{flex:1;display:flex;flex-direction:column;gap:6px;color:var(--fg);text-decoration:none;padding-bottom:8px}.tl b{font-size:1.1rem}
+.pill{align-self:flex-start;padding:1px 10px;border-radius:99px;background:color-mix(in srgb,var(--ac) 15%,transparent);color:var(--ac);font-size:.85rem}
+.ghost{min-height:36px;border:0!important;background:transparent!important;color:var(--mu);align-self:flex-end;font-size:.9rem}
+.fh{font-size:.9rem;color:var(--mu);margin:18px 0 8px;text-transform:uppercase;letter-spacing:.05em}
+.empty{text-align:center;padding:40px 16px;border:2px dashed var(--bd);border-radius:16px}.big{min-height:52px;font-size:1.1rem;padding:0 28px}
+.modes{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin:14px 0}
+.mode{display:flex;flex-direction:column;align-items:center;gap:6px;padding:16px 8px;border:1px solid var(--bd);border-radius:12px;background:var(--cd);color:var(--fg);text-decoration:none;font-weight:600;text-align:center}.mode span{font-size:1.6rem}
+.term{display:grid;grid-template-columns:1fr 1.4fr auto;gap:12px;align-items:center;padding:12px;margin:6px 0;border-radius:10px;background:var(--cd);border:1px solid var(--bd)}.tt{font-weight:600}.ta{display:flex}.ta button{border:0;background:transparent;min-width:40px}
+@media(max-width:560px){.term{grid-template-columns:1fr auto}.td{grid-column:1}.ta{grid-row:1;grid-column:2}}
+.ic{width:1.15em;height:1.15em;vertical-align:-.2em;flex:none}.mode .ic{width:1.9em;height:1.9em}
+.board{display:grid;grid-template-columns:repeat(8,1fr);gap:3px;max-width:380px;margin:12px auto;padding:6px;background:var(--bd);border-radius:10px}
+.cell{aspect-ratio:1;min-height:0!important;padding:0;border:0;border-radius:4px;background:var(--cd)}.cell.on{background:var(--ac)}
+.tray{display:flex;justify-content:center;gap:12px;margin:12px 0}.pc{min-width:92px;height:92px;display:flex;align-items:center;justify-content:center}.pc.sel{outline:3px solid var(--ac)}
+.pg{display:grid;gap:2px}.pg i{width:var(--n,14px);height:var(--n,14px);border-radius:3px}.cell.pv{background:color-mix(in srgb,var(--ac) 45%,var(--cd))}.cell.bad{background:color-mix(in srgb,var(--no) 55%,var(--cd))}.gh{position:fixed;z-index:50;pointer-events:none;transform:translate(-50%,-50%);opacity:.9}.pc{touch-action:none;user-select:none;cursor:grab}.pg i.on{background:var(--ac)}
+.noanim .fc3{transition:none}
+main.wide{max-width:1100px}
+.sl{display:grid;gap:16px;grid-template-columns:minmax(0,1fr)}.sl>aside label{margin-bottom:10px}
+.sb{position:sticky;bottom:0;z-index:4;background:var(--bg);padding:10px 0;border-top:1px solid var(--bd)}
+.gl{display:grid;gap:10px;grid-template-columns:minmax(0,1fr)}.gi h1{font-size:1.2rem;margin:4px 0}.gi h2{font-size:1.1rem;margin:4px 0}.gi .opt{min-height:44px;margin:4px 0}
+.gb .board{max-width:min(100%,44vh,420px);margin:0 auto}
+.gt{position:sticky;bottom:0;z-index:4;background:var(--bg);padding:8px 0;border-top:1px solid var(--bd)}.gt .tray{margin:0}.hs{display:none}
+@media(min-width:820px){
+.sl{grid-template-columns:240px minmax(0,1fr);align-items:start}.sl.r{grid-template-columns:minmax(0,1fr) 240px}.sl>aside{position:sticky;top:72px}
+.gl{grid-template-columns:minmax(0,1fr) minmax(320px,440px) 160px;align-items:start;gap:20px}.gb .board{max-width:none}.gt{top:72px;bottom:auto;border:0}.gt .tray{flex-direction:column;align-items:center}.hs{display:block}.gi h1{font-size:1.6rem}
+aside .modes{grid-template-columns:1fr}aside .mode{flex-direction:row;justify-content:flex-start;padding:12px 14px}aside .mode .ic{width:1.3em;height:1.3em}
+aside .row{flex-direction:column;align-items:stretch}aside .row .ghost{align-self:stretch}}
+@media(max-width:819px){.sl.al>aside{order:2}}
+::view-transition-old(root),::view-transition-new(root){animation:none;mix-blend-mode:normal}::view-transition-old(root){z-index:1}::view-transition-new(root){z-index:2}body{transition:background-color .3s,color .3s}
+.md{position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;padding:16px}
+.mb{position:relative;background:var(--cd);border-radius:8px;width:min(640px,100%);max-height:100%;overflow:auto;padding:16px 16px 0}
+.mx{position:absolute;top:4px;right:4px;border:0;background:transparent;min-width:40px;min-height:40px;z-index:1}
+.dz{margin-top:24px;border:2px dashed var(--bd);border-radius:6px;background:color-mix(in srgb,var(--ac) 6%,var(--cd));min-height:240px;display:flex;align-items:center;justify-content:center;text-align:center;cursor:pointer;padding:20px;transition:background .15s,border-color .15s}
+.dz.ov{border-color:var(--ac);background:color-mix(in srgb,var(--ac) 18%,var(--cd))}
+.dz b{display:block;font-size:1.6rem;color:var(--mu)}.dz .mu{display:block}.dz .up{width:96px;height:96px;color:var(--mu)}
+.pvw{max-width:100%;max-height:200px;border-radius:6px;display:block;margin:0 auto 8px}
+.ct2{text-align:center;margin:16px 0}
+.mf{display:flex;gap:8px;align-items:center;margin:0 -16px;padding:12px 16px;background:var(--bd);flex-wrap:wrap}
+#pv{display:none}
+@media print{main{display:none}#pv{display:block}body{background:#fff;color:#000}table{border-collapse:collapse;width:100%}td{border:1px solid #000;padding:6px}}
+</style></head><body><header class=top><div class=in><a class=logo href="#/">Inkling</a><span class=sp></span><a class="btn p" href="#/e/new">+ Create</a><a class=btn href="#/settings" aria-label="Settings"><svg class=ic viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9L7 7M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1"/></svg></a></div></header><main id="app"></main><div id="pv"></div>
+<script>
+const NAME='Inkling',DAY=864e5,IV=[0,1,3,7,14,30];
+const $=s=>document.querySelector(s),app=$('#app');
+let db=null;try{db=JSON.parse(localStorage.getItem('ss1'))}catch(e){}
+if(!db||!Array.isArray(db.sets))db={sets:[{id:'demo',title:'Welcome: world capitals',folder:'Samples',lang:'',cards:[['France','Paris'],['Japan','Tokyo'],['Kenya','Nairobi'],['Peru','Lima'],['Canada','Ottawa']].map(([t,d],i)=>({id:'d'+i,t,d}))}],n:0,d:'',bk:Date.now()};
+let warned=0;db.cfg=Object.assign({th:db.th||'system',fs:'m',side:'t',shuf:0,anim:1,rem:1},db.cfg||{});
+const save=()=>{try{localStorage.setItem('ss1',JSON.stringify(db))}catch(e){if(!warned){warned=1;alert('Your browser storage is full, so recent changes may not be saved. Export a backup and remove some images.')}}};
+const uid=()=>Math.random().toString(36).slice(2,9);
+const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[c]);
+const shuf=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]]}return a};
+const norm=s=>String(s).toLowerCase().replace(/[^\p{L}\p{N}\s]/gu,'').replace(/\s+/g,' ').trim();
+const getS=id=>db.sets.find(s=>s.id==id),dueN=s=>s.cards.filter(c=>(c.due||0)<=Date.now()).length;
+const mk=(title,cards,folder='',lang='')=>({id:uid(),title:title||'Untitled',folder,lang,cards:cards.map(([t,d])=>({id:uid(),t,d}))});
+let ST={},ED=null,tmr=null;const A={};
+function touch(){}
+function draw(h){app.innerHTML=h;app.classList.toggle('wide',h.includes('<!--w-->'));const f=$('#ans')||$('#fcard');if(f)f.focus()}
+function dl(name,txt){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([txt],{type:'application/json'}));a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1e3)}
+function say(t,l){if(!window.speechSynthesis)return alert('Speech is not supported in this browser.');speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);if(l)u.lang=l;speechSynthesis.speak(u)}
+const unq=x=>x.trim().replace(/^"|"$/g,'').replace(/""/g,'"');
+function parse(t){return t.split(/\r?\n/).map(l=>{let m,i=l.indexOf('\t');if(i>=0)return[l.slice(0,i),l.slice(i+1)].map(unq);
+ if(m=l.match(/^\s*"((?:[^"]|"")*)"\s*,\s*(.*)$/))return[m[1].replace(/""/g,'"'),unq(m[2])];
+ i=l.indexOf(',');return i>0?[l.slice(0,i),l.slice(i+1)].map(unq):null}).filter(p=>p&&(p[0]||p[1]))}
+const IC={sp:'<path d="M4 9v6h4l5 4V5L8 9z"/><path d="M16 9a4 4 0 010 6M18.5 6.5a8 8 0 010 11"/>',st:'<path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/>',im:'<rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="1.6"/><path d="M4 18l5-5 4 4 3-3 4 4"/>',fc:'<rect x="3" y="6" width="18" height="13" rx="2"/><path d="M7 3h10"/>',lr:'<path d="M4 12a8 8 0 0113.7-5.6L20 9M20 4v5h-5M20 12a8 8 0 01-13.7 5.6L4 15M4 20v-5h5"/>',ts:'<rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 3h6v3H9zM9 12h6M9 16h4"/>',ma:'<rect x="3" y="4" width="7" height="7" rx="1"/><rect x="14" y="13" width="7" height="7" rx="1"/><path d="M10 7.5h4v9"/>',rv:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',gm:'<rect x="3" y="8" width="18" height="10" rx="4"/><path d="M8 11v4M6 13h4M16 12h.01M18 14h.01"/>',bp:'<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/>',sd:'<path d="M13 3L5 14h6l-1 7 8-11h-6z"/>',ck:'<path d="M5 12l5 5 9-10"/>',x:'<path d="M6 6l12 12M18 6L6 18"/>',l:'<path d="M15 5l-7 7 7 7"/>',r:'<path d="M9 5l7 7-7 7"/>'};
+const ic=(n,f)=>`<svg class=ic viewBox="0 0 24 24" fill="${f?'currentColor':'none'}" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${IC[n]}</svg>`;
+const back=S=>`<a href="#/s/${S.id}">← ${esc(S.title)}</a>`;
+const msg=(t,S)=>`${back(S)}<p>${t}</p>`;
+
+/* HOME */
+function lst(q){q=q.toLowerCase();const L=db.sets.filter(s=>!q||(s.title+' '+s.folder+' '+s.cards.map(c=>c.t+' '+c.d).join(' ')).toLowerCase().includes(q));
+ if(!db.sets.length)return'<div class=empty><h2>Create your first set</h2><p class=mu>Add terms and definitions, then study them with flashcards, Learn, Test, and Match.</p><a class="btn p big" href="#/e/new">Create a set</a></div>';
+ if(!L.length)return'<p class=mu>No sets match your search.</p>';
+ const F={};L.forEach(s=>(F[s.folder||'Unfiled']=F[s.folder||'Unfiled']||[]).push(s));
+ return Object.keys(F).sort().map(f=>`<h2 class=fh>${esc(f)}</h2><div class=tiles>`+F[f].map(s=>`<div class=tile2><a class=tl href="#/s/${s.id}"><b>${esc(s.title)}</b><span class=pill>${s.cards.length} terms</span><span class=mu>${dueN(s)?dueN(s)+' to review':'All caught up'}</span></a><button class=ghost aria-label="Delete ${esc(s.title)}" onclick="A.rm('${s.id}')">Delete</button></div>`).join('')+'</div>').join('')}
+function home(){return`<h1>Your sets</h1>
+${db.cfg.rem&&db.sets.length&&Date.now()-db.bk>14*DAY?'<div class=bn role=status>It has been over two weeks since your last backup. <button onclick="A.exp()">Back up now</button></div>':''}
+${db.sets.length?'<div class=row><input id=q type=search placeholder="Search your sets and terms" aria-label="Search your sets and terms" oninput="$(\'#list\').innerHTML=lst(this.value)"></div>':''}
+<div id=list>${lst('')}</div>
+<div class=row><a class=btn href="#/ai">Make cards with AI</a><button onclick="$('#fi').click()">Import file</button><input id=fi type=file hidden accept=".json,.csv,.tsv,.txt" onchange="A.file(this)"><button onclick="A.exp()">Back up everything</button></div>
+<p class=mu>Your sets are saved only in this browser. Back them up from time to time.</p>`}
+
+/* SET VIEW */
+function setV(S){const u=`#/s/${S.id}/`,n=S.cards.length,M=[['fc','Flashcards','fc'],['lr','Learn','lr'],['ts','Test','ts'],['gm','Games','gm'],['rv','Review due ('+dueN(S)+')','rv'],['fs','Starred terms','st']];
+ return`<a href="#/">← All sets</a><h1>${esc(S.title)}</h1><p class=mu>${n} terms${S.folder?' · '+esc(S.folder):''}${S.best?' · Best match time '+S.best+'s':''}</p>
+<div class=modes>${M.map(([k,l,i])=>`<a class=mode href="${u}${k}">${ic(i)}${l}</a>`).join('')}</div>
+<div class=row><a class=btn href="#/e/${S.id}">Edit set</a><button onclick="A.exp('${S.id}')">Export</button><button onclick="A.share('${S.id}')">Share link</button><button onclick="A.print('${S.id}')">Print</button><button class=ghost onclick="A.rm('${S.id}')">Delete</button></div>
+<h2>Terms in this set (${n})</h2>
+${S.cards.map(c=>`<div class=term><div class=tt>${c.i?`<img class=th src="${esc(c.i)}" alt=""> `:''}${esc(c.t)}</div><div class=td>${esc(c.d)}</div><div class=ta><button aria-label="Star term" aria-pressed="${!!c.s}" onclick="A.star('${S.id}','${c.id}',this)">${ic('st',c.s)}</button><button aria-label="Speak term" onclick="A.say('${S.id}','${c.id}')">${ic('sp')}</button></div></div>`).join('')}`}
+
+/* EDITOR */
+function edit(id){if(!ED||ED.key!=id){const S=getS(id);ED=S?Object.assign({key:id},JSON.parse(JSON.stringify(S))):{key:id,id:uid(),title:'',folder:'',lang:'',cards:[1,2,3].map(()=>({id:uid(),t:'',d:''}))}}return edH()}
+function edH(){return`<a href="#/${ED.key=='new'?'':'s/'+ED.key}">← Back</a><h1>${ED.key=='new'?'New set':'Edit set'}</h1>
+<label>Title<input value="${esc(ED.title)}" oninput="ED.title=this.value"></label>
+<div class=row><label>Folder<input value="${esc(ED.folder)}" oninput="ED.folder=this.value"></label><label>Voice language, such as es-ES (optional)<input value="${esc(ED.lang)}" oninput="ED.lang=this.value"></label></div>
+${ED.cards.map((c,i)=>`<div class=cr><span>${i+1}</span><input aria-label="Term ${i+1}" value="${esc(c.t)}" oninput="ED.cards[${i}].t=this.value"><input aria-label="Definition ${i+1}" value="${esc(c.d)}" oninput="ED.cards[${i}].d=this.value"><button aria-label="${c.i?'Remove image from':'Add image to'} card ${i+1}" title="${c.i?'Remove image':'Add image'}" onclick="A.img(${i})">${c.i?`<img class=th src="${esc(c.i)}" alt="">`:ic('im')}</button><button aria-label="Delete card ${i+1}" onclick="A.del(${i})">${ic('x')}</button></div>`).join('')}
+<input id=imf type=file accept="image/*" hidden onchange="A.imf(this)"><div class=row><button onclick="A.add()">Add card</button></div>
+<details><summary>Bulk import: paste text or CSV</summary><p class=mu>One card per line: term, then a tab or comma, then definition. Quizlet exports work.</p><textarea id=bulk rows=6 aria-label="Paste cards"></textarea><div class=row><button onclick="A.bulk()">Add these cards</button></div></details>
+<div class=row><button class=p onclick="A.saveEd()">Save set</button></div>`}
+const ed=()=>draw(edH());
+A.add=()=>{ED.cards.push({id:uid(),t:'',d:''});ed()};A.del=i=>{ED.cards.splice(i,1);ed()};
+A.img=i=>{if(ED.cards[i].i){delete ED.cards[i].i;return ed()}ED.ci=i;ED.pend=null;openM()};
+A.imf=inp=>{const f=inp.files[0];inp.value='';if(f)A.pick(f)};
+A.mc=()=>{const m=$('#md');if(m)m.remove()};
+A.prev=(src,name)=>{ED.pend=src;$('#dzc').innerHTML=`<div><img class=pvw src="${esc(src)}" alt="Preview" onerror="$('#ap').disabled=true;this.alt='That image could not be loaded'">${name?`<span class=mu>${esc(name)}</span>`:''}<span class=mu>Click to choose a different picture</span></div>`;$('#ap').disabled=false};
+A.pick=f=>{if(!f||!/^image\//.test(f.type))return alert('Please choose an image file.');const im=new Image(),u=URL.createObjectURL(f);
+ im.onload=()=>{const k=Math.min(1,480/Math.max(im.width,im.height)),c=document.createElement('canvas');c.width=Math.round(im.width*k);c.height=Math.round(im.height*k);
+  const x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,c.width,c.height);x.drawImage(im,0,0,c.width,c.height);URL.revokeObjectURL(u);A.prev(c.toDataURL('image/jpeg',.72),f.name)};
+ im.onerror=()=>{URL.revokeObjectURL(u);alert('That file could not be read as an image.')};im.src=u};
+A.url=v=>{v=v.trim();if(/^https?:\/\/\S+$/i.test(v))A.prev(v,'');else{ED.pend=null;$('#ap').disabled=true}};
+A.ma=()=>{if(ED.pend)ED.cards[ED.ci].i=ED.pend;ED.pend=null;A.mc();ed()};
+function openM(){A.mc();const d=document.createElement('div');d.id='md';d.className='md';d.setAttribute('role','dialog');d.setAttribute('aria-modal','true');d.setAttribute('aria-label','Add a picture');
+ d.innerHTML=`<div class=mb><button class=mx aria-label="Close" onclick="A.mc()">${ic('x')}</button>
+<div id=dz class=dz tabindex=0 role=button aria-label="Drag and drop an image here, or press Enter to choose a file"><div id=dzc><svg class=up viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 18a4 4 0 01-.5-7.97A5.5 5.5 0 0117 8.5a4.5 4.5 0 01.5 9.5H7z"/><path d="M12 16v-6M9.5 12.5L12 10l2.5 2.5"/></svg><b>Drag and drop or click here</b><span class=mu>to upload your image</span></div></div>
+<p class=ct2>You can also paste an image, or provide a <a href="#" onclick="event.preventDefault();$('#ul').hidden=false;$('#ur').focus()">link from the web</a>.</p>
+<div id=ul hidden><input id=ur type=url placeholder="https://example.com/picture.jpg" aria-label="Image link" oninput="A.url(this.value)"></div>
+<div class=mf><span class=mu>Uploaded pictures are shrunk to fit.</span><span class=sp></span><button onclick="A.mc()">Cancel</button><button class=p id=ap disabled onclick="A.ma()">Add picture</button></div></div>`;
+ document.body.appendChild(d);const z=$('#dz');z.onclick=()=>$('#imf').click();z.onkeydown=e=>{if(e.key=='Enter'||e.key==' '){e.preventDefault();$('#imf').click()}};
+ ['dragenter','dragover'].forEach(n=>z.addEventListener(n,e=>{e.preventDefault();z.classList.add('ov')}));['dragleave','drop'].forEach(n=>z.addEventListener(n,e=>{e.preventDefault();z.classList.remove('ov')}));
+ z.addEventListener('drop',e=>A.pick(e.dataTransfer.files[0]));['dragover','drop'].forEach(n=>d.addEventListener(n,e=>e.preventDefault()));
+ d.addEventListener('keydown',e=>{if(e.key=='Escape')A.mc()});d.addEventListener('click',e=>{if(e.target==d)A.mc()});z.focus()}
+document.addEventListener('paste',e=>{if(!$('#md'))return;const it=[...(e.clipboardData?e.clipboardData.items:[])].find(x=>x.type.startsWith('image/'));if(it){e.preventDefault();A.pick(it.getAsFile())}});
+A.bulk=()=>{parse($('#bulk').value).forEach(([t,d])=>ED.cards.push({id:uid(),t,d}));ed()};
+A.saveEd=()=>{const e=ED;e.cards=e.cards.filter(c=>c.t.trim()||c.d.trim()||c.i);e.title=e.title.trim()||'Untitled';const s=Object.assign({},e);delete s.key;delete s.pend;delete s.ci;const i=db.sets.findIndex(x=>x.id==s.id);if(i>=0)db.sets[i]=s;else db.sets.push(s);save();ED=null;location.hash='#/s/'+s.id};
+
+/* FLASHCARDS + SPACED REVIEW */
+function study(S,m){if(!S.cards.length)return msg('Add some cards first.',S);
+ const f={fc:()=>fc(S,'all'),rv:()=>fc(S,'rv'),fs:()=>fc(S,'fs'),lr:()=>learn(S),ts:()=>test(S),ma:()=>match(S),gm:()=>games(S),bp:()=>game(S),sp:()=>speed(S)}[m];return f?f():home()}
+function fc(S,k){const d=S.cards.filter(c=>k=='fs'?c.s:k=='rv'?(c.due||0)<=Date.now():1);
+ if(!d.length)return msg(k=='fs'?'No starred cards yet. Star cards from the set page.':'Nothing is due right now. Check back later.',S);
+ ST={k:'fc',S,d:db.cfg.shuf?shuf(d):d,all:d,i:0,f:db.cfg.side=='d'?1:0,tr:k=='rv',kn:0,sl:[]};return fcH()}
+function fcH(){const{S,d,i,f,tr}=ST;
+ if(i>=d.length)return`${back(S)}<h1>${tr?'Nice work!':'Round complete'}</h1>${tr?`<p class=ok>Know: ${ST.kn}</p><p class=no>Still learning: ${ST.sl.length}</p>`:`<p>You went through ${d.length} cards.</p>`}<div class=row>${tr&&ST.sl.length?'<button class=p onclick="A.again(1)">Keep reviewing still learning</button>':''}<button onclick="A.again(0)">Restart</button></div>`;
+ const c=d[i];
+ return`<!--w-->${back(S)}<progress max=${d.length} value=${i} aria-label="Progress"></progress>
+${tr?`<div class=row><b class=no>Still learning ${ST.sl.length}</b><span class=sp></span><b class=ok>Know ${ST.kn}</b></div>`:''}
+<div class="sl r"><section><div class=fw><div id=fcard class="fc3${f?' fl':''}" role=button tabindex=0 aria-label="Flashcard. Press space to flip." onclick="A.flip()"><div class=face>${esc(c.t)}</div><div class="face bk">${c.i?`<img class=ci src="${esc(c.i)}" alt="Picture for ${esc(c.t)}">`:''}<span>${esc(c.d)}</span></div></div>
+<div class=ct><button aria-label="Speak" onclick="A.fsay()">${ic('sp')}</button><button aria-label="Star card" aria-pressed="${!!c.s}" onclick="A.fstar()">${ic('st',c.s)}</button></div></div>
+<div class="row nav">${tr?`<button class="rd no" aria-label="Still learning" onclick="A.g(0)">${ic('x')}</button><span>${i+1} / ${d.length}</span><button class="rd ok" aria-label="Know it" onclick="A.g(1)">${ic('ck')}</button>`:`<button class=rd aria-label="Previous card" onclick="A.nav(-1)">${ic('l')}</button><span>${i+1} / ${d.length}</span><button class=rd aria-label="Next card" onclick="A.nav(1)">${ic('r')}</button>`}</div></section>
+<aside><div class=row><button aria-pressed="${tr}" onclick="A.trk()">Track progress: ${tr?'On':'Off'}</button><button onclick="A.fshuf()">Shuffle</button><button onclick="A.again(0)">Restart</button></div>
+<p class=mu>Space flips the card. ${tr?'Left arrow: still learning. Right arrow: know it.':'Left and right arrows move between cards.'}</p></aside></div>`}
+const fd=()=>draw(fcH());
+A.flip=()=>{ST.f^=1;$('#fcard').classList.toggle('fl',!!ST.f)};
+A.nav=n=>{ST.i=Math.max(0,Math.min(ST.d.length,ST.i+n));ST.f=db.cfg.side=='d'?1:0;fd()};
+A.again=r=>{ST.d=r?ST.sl:ST.all;ST.i=0;ST.f=db.cfg.side=='d'?1:0;ST.kn=0;ST.sl=[];fd()};
+A.trk=()=>{ST.tr=!ST.tr;ST.kn=0;ST.sl=[];ST.i=0;ST.f=db.cfg.side=='d'?1:0;fd()};
+A.g=ok=>{const c=ST.d[ST.i],b=c.b||0;c.b=ok?Math.min(5,b+1):0;c.due=Date.now()+(ok?IV[c.b]*DAY:0);if(ok)ST.kn++;else ST.sl.push(c);touch();save();A.nav(1)};
+A.fstar=()=>{const c=ST.d[ST.i];c.s=!c.s;save();fd()};A.fsay=()=>say(ST.d[ST.i][ST.f?'d':'t'],ST.S.lang);A.fshuf=()=>{ST.d=shuf(ST.d);ST.i=0;ST.f=db.cfg.side=='d'?1:0;fd()};
+let tx=null;document.addEventListener('touchstart',e=>{tx=e.touches[0].clientX},{passive:true});
+document.addEventListener('touchend',e=>{if(ST.k!='fc'||tx==null||ST.i>=ST.d.length)return;const dx=e.changedTouches[0].clientX-tx;tx=null;if(Math.abs(dx)>70){if(ST.tr)A.g(dx>0?1:0);else A.nav(dx<0?1:-1)}});
+document.addEventListener('keydown',e=>{if(ST.k!='fc'||/^(INPUT|TEXTAREA|SELECT|BUTTON)$/.test(e.target.tagName)||ST.i>=ST.d.length)return;
+ if([' ','Enter','ArrowUp','ArrowDown'].includes(e.key)){e.preventDefault();A.flip()}
+ else if(e.key=='ArrowRight'){ST.tr?A.g(1):A.nav(1)}else if(e.key=='ArrowLeft'){ST.tr?A.g(0):A.nav(-1)}});
+
+/* LEARN */
+function learn(S){ST={k:'lr',S,lv:{},cur:null};S.cards.forEach(c=>ST.lv[c.id]=0);return lrH()}
+function lrH(){const{S,lv}=ST,n=S.cards.length,sum=S.cards.reduce((a,c)=>a+lv[c.id],0),open=S.cards.filter(c=>lv[c.id]<2);
+ if(!open.length)return`${back(S)}<h1>Learned!</h1><p>You mastered all ${n} cards.</p><button class=p onclick="A.lrs()">Go again</button>`;
+ const pool=open.length>1?open.filter(c=>c!==ST.cur):open,c=pool[Math.random()*pool.length|0];ST.cur=c;ST.ans=0;let body;
+ if(lv[c.id]==0&&n>=4){const o=shuf([c.d,...shuf(S.cards.filter(x=>x.d!=c.d)).slice(0,3).map(x=>x.d)]);ST.o=o;body=o.map((x,i)=>`<button class=opt onclick="A.pick(${i})">${esc(x)}</button>`).join('')}
+ else body=`<form onsubmit="A.sub(event)"><input id=ans autocomplete=off aria-label="Your answer"><div class=row><button class=p>Check</button></div></form>`;
+ return`${back(S)}<progress max=${2*n} value=${sum}></progress><p class=mu>Give the definition for:</p><h2>${esc(c.t)}</h2><div class=row><button onclick="say(ST.cur.t,ST.S.lang)">Say</button></div><div>${body}</div><div id=fb role=status></div>`}
+function fb(ok,c){ST.lv[c.id]=ok?ST.lv[c.id]+1:0;touch();ST.ans=1;$('#fb').innerHTML=`<p class="${ok?'ok':'no'}">${ok?'Correct!':'Not quite. The answer is <b>'+esc(c.d)+'</b>'}</p><button class=p id=nx onclick="A.lr()">Continue</button>`;$('#nx').focus()}
+A.lr=()=>draw(lrH());A.lrs=()=>draw(learn(ST.S));
+A.pick=i=>{if(ST.ans)return;const c=ST.cur;document.querySelectorAll('.opt').forEach((b,j)=>{b.disabled=1;if(ST.o[j]==c.d)b.classList.add('okb');else if(j==i)b.classList.add('nob')});fb(ST.o[i]==c.d,c)};
+A.sub=e=>{e.preventDefault();if(ST.ans)return;const c=ST.cur,v=$('#ans');v.disabled=1;fb(norm(v.value)==norm(c.d),c)};
+
+/* TEST */
+function test(S){const n=S.cards.length,c=Object.assign({n:20,tf:1,mc:1,ma:1,wr:1,rl:0},db.tc||{});ST={k:'tsc',S};
+ return`${back(S)}<h1>Set up your test</h1><p class=mu>${n} cards in this set</p>
+<form onsubmit="A.go(event)"><label>Questions (max ${n})<input name=n type=number min=1 max=${n} value="${Math.min(c.n,n)}"></label>
+<fieldset><legend>Question types</legend>${[['tf','True or false'],['mc','Multiple choice'],['ma','Matching'],['wr','Written']].map(([k,l])=>`<label class=ch><input type=checkbox name=${k} ${c[k]?'checked':''}>${l}</label>`).join('')}${n<4?'<p class=mu>Multiple choice and matching need at least 4 cards.</p>':''}</fieldset>
+<fieldset><legend>Grading for written answers</legend><label class=ch><input type=radio name=rl value=0 ${c.rl?'':'checked'}>Strict: spelling and accents must match</label><label class=ch><input type=radio name=rl value=1 ${c.rl?'checked':''}>Relaxed: small typos and missing accents are okay</label></fieldset>
+<div class=row><button class=p>Start test</button></div></form>`}
+A.go=e=>{e.preventDefault();const f=new FormData(e.target),S=ST.S,cfg={n:Math.max(1,Math.min(+f.get('n')||20,S.cards.length)),rl:+f.get('rl')};
+ ['tf','mc','ma','wr'].forEach(k=>cfg[k]=f.has(k)?1:0);
+ const T=['tf','mc','ma','wr'].filter(k=>cfg[k]&&(S.cards.length>=4||(k!='mc'&&k!='ma')));
+ if(!T.length)return alert('Choose at least one question type. Multiple choice and matching need 4 or more cards.');
+ db.tc=cfg;save();draw(buildTest(S,cfg,T));scrollTo(0,0)};
+const lev=(a,b)=>{const d=[...Array(b.length+1).keys()];for(let i=1;i<=a.length;i++){let p=d[0];d[0]=i;for(let j=1;j<=b.length;j++){const t=d[j];d[j]=Math.min(d[j]+1,d[j-1]+1,p+(a[i-1]==b[j-1]?0:1));p=t}}return d[b.length]};
+const same=(a,b,rl)=>{a=norm(a);b=norm(b);if(a==b)return 1;if(!rl)return 0;const f=x=>x.normalize('NFD').replace(/[\u0300-\u036f]/g,'');a=f(a);b=f(b);return lev(a,b)<=(b.length>=9?2:b.length>=4?1:0)};
+function buildTest(S,cfg,T){const cs=shuf(S.cards).slice(0,cfg.n),ks=cs.map((c,i)=>T[i%T.length]);
+ if(ks.filter(k=>k=='ma').length==1){const o=T.find(k=>k!='ma');if(o)ks[ks.indexOf('ma')]=o}
+ const Q=cs.map((c,i)=>{const k=ks[i],q={k,c};
+  if(k=='mc')q.o=shuf([c.d,...shuf(S.cards.filter(x=>x.d!=c.d)).slice(0,3).map(x=>x.d)]);
+  if(k=='tf'){const o=S.cards.filter(x=>x.d!=c.d);q.sh=Math.random()<.5||!o.length?c.d:o[Math.random()*o.length|0].d;q.real=q.sh==c.d}return q});
+ ST={k:'ts',S,Q,rl:cfg.rl,md:shuf(Q.filter(q=>q.k=='ma').map(q=>q.c.d))};
+ const h=Q.map((q,i)=>{const c=q.c,nm='q'+i;let b,l='Define: '+esc(c.t);
+  if(q.k=='mc')b=q.o.map((x,j)=>`<label class=ch><input type=radio name=${nm} value="${j}">${esc(x)}</label>`).join('');
+  else if(q.k=='tf'){l='True or false: '+esc(c.t)+' means '+esc(q.sh);b=`<label class=ch><input type=radio name=${nm} value=1>True</label><label class=ch><input type=radio name=${nm} value=0>False</label>`}
+  else if(q.k=='wr')b=`<input name=${nm} autocomplete=off aria-label="Answer">`;
+  else{l='Match: '+esc(c.t);b=`<select name=${nm} aria-label="${l}"><option value="">Choose a definition</option>${ST.md.map((x,j)=>`<option value="${j}">${esc(x)}</option>`).join('')}</select>`}
+  return`<fieldset><legend>${i+1}. ${l}</legend>${b}</fieldset>`}).join('');
+ return`${back(S)}<h1>Test</h1><form onsubmit="A.grade(event)">${h}<div class=row><button class=p>Submit test</button></div></form>`}
+A.grade=e=>{e.preventDefault();const f=new FormData(e.target),{Q,md,S}=ST;let sc=0;
+ const R=Q.map((q,i)=>{const v=f.get('q'+i),c=q.c;let ok,ans=c.d;
+  if(q.k=='mc')ok=v!==null&&q.o[v]==c.d;else if(q.k=='tf'){ok=v!==null&&(v==1)==q.real;ans=q.real?'True':'False'}
+  else if(q.k=='wr')ok=same(v||'',c.d,ST.rl);else ok=!!v&&md[v]==c.d;
+  if(ok)sc++;return`<p class="${ok?'ok':'no'}">${ok?'Correct':'Missed'}: ${esc(c.t)}${ok?'':'. Answer: '+esc(ans)}</p>`});
+ touch();draw(`${back(S)}<h1>${sc} of ${Q.length} (${Math.round(100*sc/Q.length)}%)</h1>${R.join('')}<div class=row><button class=p onclick="draw(test(ST.S))">New test</button></div>`);scrollTo(0,0)};
+
+/* MATCH */
+function match(S){const cs=shuf(S.cards).slice(0,6);ST={k:'ma',S,t0:Date.now(),sel:null,left:cs.length,tl:shuf(cs.flatMap(c=>[{id:c.id,x:c.t,s:'t'},{id:c.id,x:c.d,s:'d'}]))};
+ return`${back(S)}<h1>Match, <span id=tm>0.0</span>s</h1><p class=mu>Tap a term, then its definition.</p><div class=mg>${ST.tl.map((t,i)=>`<button class=tile id=t${i} onclick="A.tile(${i})">${esc(t.x)}</button>`).join('')}</div><div id=fb role=status></div>`}
+A.tmr=()=>{clearInterval(tmr);tmr=setInterval(()=>{const e=$('#tm');if(e)e.textContent=((Date.now()-ST.t0)/1e3).toFixed(1)},100)};
+A.tile=i=>{const t=ST.tl[i],b=$('#t'+i);if(t.done)return;
+ if(ST.sel==null){ST.sel=i;b.classList.add('sel');return}
+ if(ST.sel==i){b.classList.remove('sel');ST.sel=null;return}
+ const a=ST.tl[ST.sel],ab=$('#t'+ST.sel);ST.sel=null;ab.classList.remove('sel');
+ if(a.id==t.id&&a.s!=t.s){a.done=t.done=1;[ab,b].forEach(x=>{x.classList.add('gone');x.disabled=1});
+  if(!--ST.left){clearInterval(tmr);const s=+((Date.now()-ST.t0)/1e3).toFixed(1);let m='';if(!ST.S.best||s<ST.S.best){ST.S.best=s;m=' New best time!'}touch();save();
+   $('#fb').innerHTML=`<p class=ok>Done in ${s}s.${m}</p><button class=p onclick="draw(match(ST.S));A.tmr()">Play again</button>`}}
+ else{[ab,b].forEach(x=>x.classList.add('bad'));setTimeout(()=>[ab,b].forEach(x=>x.classList.remove('bad')),400)}};
+
+/* GAMES */
+function mkq(S){const c=S.cards[Math.random()*S.cards.length|0];return{c,o:shuf([c.d,...shuf(S.cards.filter(x=>x.d!=c.d)).slice(0,3).map(x=>x.d)])}}
+const qh=(q,f)=>`<p class=mu>Pick the definition for:</p><h2>${esc(q.c.t)}</h2>${q.o.map((x,i)=>`<button class=opt onclick="${f}(${i})">${esc(x)}</button>`).join('')}`;
+function games(S){const u=`#/s/${S.id}/`;return`${back(S)}<h1>Games</h1><div class=modes><a class=mode href="${u}ma">${ic('ma')}Match</a><a class=mode href="${u}bp">${ic('bp')}Block Puzzle</a><a class=mode href="${u}sp">${ic('sd')}Speed Round</a></div><p class=mu>Block Puzzle and Speed Round need at least 4 cards. In Block Puzzle you earn each piece by answering a question.</p>`}
+const SH=[[[0,0]],[[0,0],[0,1]],[[0,0],[1,0]],[[0,0],[0,1],[0,2]],[[0,0],[1,0],[2,0]],[[0,0],[0,1],[1,0],[1,1]],[[0,0],[0,1],[1,0]],[[0,1],[1,0],[1,1]],[[0,0],[0,1],[0,2],[1,0]],[[0,0],[0,1],[0,2],[1,2]],[[0,0],[0,1],[0,2],[1,0],[1,1],[1,2]]],rs=()=>SH[Math.random()*SH.length|0];
+const fits=s=>{for(let r=0;r<8;r++)for(let c=0;c<8;c++)if(s.every(([a,b])=>r+a<8&&c+b<8&&!ST.g[(r+a)*8+c+b]))return 1;return 0};
+const pg=(s,n=14)=>{const h=Math.max(...s.map(p=>p[0]))+1,w=Math.max(...s.map(p=>p[1]))+1;let o='';for(let r=0;r<h;r++)for(let c=0;c<w;c++)o+=`<i class="${s.some(p=>p[0]==r&&p[1]==c)?'on':''}"></i>`;return`<span class=pg style="--n:${n}px;grid-template-columns:repeat(${w},${n}px)">${o}</span>`};
+function game(S){if(S.cards.length<4)return msg('Games need at least 4 cards in this set.',S);ST={k:'gm',S,g:Array(64).fill(0),tray:[rs(),rs(),rs()],tk:0,sc:0,sel:null,fb:'',over:0,hi:S.bb||0,q:mkq(S)};return gmH()}
+function gmH(){const G=ST;
+ const cells=G.g.map((v,i)=>`<button class="cell${v?' on':''}" aria-label="Row ${(i/8|0)+1}, column ${i%8+1}${v?', filled':''}" onclick="A.place(${i},event)" onpointerover="A.hv(${i})"></button>`).join('');
+ const tray=G.tray.map((s,k)=>s?`<button class="pc${G.sel==k?' sel':''}" aria-label="Piece ${k+1}" aria-pressed="${G.sel==k}" onpointerdown="A.pd(event,${k})" onclick="A.selp(${k})">${pg(s)}</button>`:'<span class=pc></span>').join('');
+ return`<!--w-->${back(G.S)}<div class=gl><div class=gi><h1>Block Puzzle</h1><div class=row><b>Score ${G.sc}</b><span class=sp></span><span class=mu>Best ${G.hi}</span></div>
+${G.fb?`<p role=status class=no>${esc(G.fb)}</p>`:''}
+${G.over?`<div class=bn><b>Game over.</b> Final score ${G.sc}. <button class=p onclick="draw(game(ST.S))">Play again</button></div>`:G.tk?'<p role=status class=ok>Correct! Drag a piece onto the board, or tap a piece and then the board (on a touch screen, tap once to preview and again to place).</p>':qh(G.q,'A.ga')}
+<p class="mu hs">Fill a full row or column to clear it for bonus points.</p></div>
+<div class=gb><div class=board onpointerleave="A.pv(null)">${cells}</div></div><div class=gt><div class=tray>${tray}</div></div></div>`}
+const gd=()=>{ST.pi=null;draw(gmH())};
+A.ga=i=>{const G=ST;if(G.q.o[i]==G.q.c.d){G.tk=1;G.fb=''}else{G.fb='Not quite: '+G.q.c.d+'. Try another.';G.q=mkq(G.S)}gd()};
+A.selp=k=>{if(ST.dg||!ST.tk||ST.over)return;ST.sel=k;gd()};
+A.pv=(s,r0,c0)=>{document.querySelectorAll('.cell.pv,.cell.bad').forEach(x=>x.classList.remove('pv','bad'));if(!s)return;const G=ST,cs=document.querySelectorAll('.cell');
+ const ok=s.every(([a,b])=>{const r=r0+a,c=c0+b;return r>=0&&c>=0&&r<8&&c<8&&!G.g[r*8+c]});
+ s.forEach(([a,b])=>{const r=r0+a,c=c0+b;if(r>=0&&c>=0&&r<8&&c<8)cs[r*8+c].classList.add(ok?'pv':'bad')})};
+A.hv=i=>{if(ST.sel!=null&&ST.tk&&!ST.over&&!ST.ing)A.pv(ST.tray[ST.sel],i/8|0,i%8)};
+A.pd=(e,k)=>{const G=ST;if(!G.tk||G.over||e.button>0)return;const s=G.tray[k],b=$('.board'),bw=b.getBoundingClientRect().width/8,touch=e.pointerType!='mouse';
+ const h=Math.max(...s.map(p=>p[0]))+1,w=Math.max(...s.map(p=>p[1]))+1,x0=e.clientX,y0=e.clientY;let t=null;G.ing=1;
+ const gh=document.createElement('div');gh.className='gh';gh.innerHTML=pg(s,Math.round(bw-5));document.body.appendChild(gh);
+ const mv=ev=>{if(Math.abs(ev.clientX-x0)+Math.abs(ev.clientY-y0)>6)G.dg=1;const px=ev.clientX,py=ev.clientY-(touch?70:0),r=b.getBoundingClientRect();
+  gh.style.left=px+'px';gh.style.top=py+'px';
+  const inb=px>r.left&&px<r.right&&py>r.top&&py<r.bottom,r0=Math.round(Math.floor((py-r.top)/(r.height/8))-(h-1)/2),c0=Math.round(Math.floor((px-r.left)/(r.width/8))-(w-1)/2);
+  t=inb?[r0,c0]:null;if(G.dg)A.pv(inb?s:null,r0,c0)};
+ const up=()=>{removeEventListener('pointermove',mv);removeEventListener('pointerup',up);removeEventListener('pointercancel',up);gh.remove();A.pv(null);G.ing=0;
+  if(G.dg){if(t&&t[0]>=0&&t[1]>=0&&t[0]<8&&t[1]<8){G.sel=k;A.place(t[0]*8+t[1])}else gd()}setTimeout(()=>G.dg=0,0)};
+ mv(e);addEventListener('pointermove',mv);addEventListener('pointerup',up);addEventListener('pointercancel',up)};
+
+A.place=(i,e)=>{const G=ST;if(G.over||!G.tk)return;if(G.sel==null){G.fb='Choose a piece first.';return gd()}
+ if(e&&e.pointerType&&e.pointerType!='mouse'&&G.pi!=i){G.pi=i;return A.pv(G.tray[G.sel],i/8|0,i%8)}
+ const s=G.tray[G.sel],r=i/8|0,c=i%8;if(!s.every(([a,b])=>r+a<8&&c+b<8&&!G.g[(r+a)*8+c+b])){G.fb='That piece does not fit there.';return gd()}
+ s.forEach(([a,b])=>G.g[(r+a)*8+c+b]=1);G.sc+=s.length;G.tray[G.sel]=null;G.sel=null;G.tk=0;G.fb='';
+ const R=[],C=[],K=[...Array(8).keys()];K.forEach(k=>{if(K.every(j=>G.g[k*8+j]))R.push(k);if(K.every(j=>G.g[j*8+k]))C.push(k)});
+ R.forEach(k=>K.forEach(j=>G.g[k*8+j]=0));C.forEach(k=>K.forEach(j=>G.g[j*8+k]=0));const n=R.length+C.length;G.sc+=n*n*10;
+ if(G.tray.every(x=>!x))G.tray=[rs(),rs(),rs()];if(!G.tray.some(x=>x&&fits(x)))G.over=1;else G.q=mkq(G.S);
+ if(G.sc>(G.S.bb||0)){G.S.bb=G.sc;G.hi=G.sc;save()}gd()};
+function speed(S){if(S.cards.length<4)return msg('Games need at least 4 cards in this set.',S);ST={k:'sp',S,sc:0,t0:Date.now(),over:0,fb:'',q:mkq(S)};
+ tmr=setInterval(()=>{const t=60-(Date.now()-ST.t0)/1e3,e=$('#tm');if(t<=0){clearInterval(tmr);ST.over=1;if(ST.sc>(S.sr||0)){S.sr=ST.sc;save()}draw(spH())}else if(e)e.textContent=Math.ceil(t)},250);return spH()}
+function spH(){const G=ST;if(G.over)return`${back(G.S)}<h1>Time is up!</h1><p>You answered <b>${G.sc}</b> correctly.</p><p class=mu>Best: ${G.S.sr||0}</p><button class=p onclick="draw(speed(ST.S))">Play again</button>`;
+ return`${back(G.S)}<div class=row><h1 class=sp>Speed Round</h1><b><span id=tm>60</span>s</b></div><p>Score ${G.sc}</p>${G.fb?`<p class=no>${esc(G.fb)}</p>`:''}${qh(G.q,'A.sa')}`}
+A.sa=i=>{const G=ST,c=G.q.c;if(G.q.o[i]==c.d){G.sc++;G.fb=''}else G.fb='Missed: '+c.t+' = '+c.d;G.q=mkq(G.S);draw(spH())};
+
+/* SETTINGS */
+function settings(){const c=db.cfg,R=(n,v,l)=>`<label class=ch><input type=radio name=${n} value="${v}" ${c[n]==v?'checked':''} onchange="A.set('${n}',this.value,this)">${l}</label>`,K=(n,l)=>`<label class=ch><input type=checkbox ${c[n]?'checked':''} onchange="A.set('${n}',this.checked?1:0)">${l}</label>`;
+ return`<a href="#/">← Back</a><h1>Settings</h1>
+<fieldset><legend>Appearance</legend>${R('th','system','Match my device')}${R('th','light','Light')}${R('th','dark','Dark')}</fieldset>
+<fieldset><legend>Flashcard text size</legend>${R('fs','s','Small')}${R('fs','m','Medium')}${R('fs','l','Large')}</fieldset>
+<fieldset><legend>Flashcards</legend>${R('side','t','Start on the term')}${R('side','d','Start on the definition')}${K('shuf','Shuffle cards when a round starts')}${K('anim','Animate the card flip')}</fieldset>
+<fieldset><legend>Backups</legend>${K('rem','Remind me to back up every two weeks')}<div class=row><button onclick="A.exp()">Back up everything now</button><button onclick="$('#fi2').click()">Import a file</button><input id=fi2 type=file hidden accept=".json,.csv,.tsv,.txt" onchange="A.file(this)"></div></fieldset>
+<fieldset><legend>Your data</legend><p class=mu>Everything is stored only in this browser.</p><button class=no onclick="A.wipe()">Delete all my sets and settings</button></fieldset>`}
+A.set=(k,v,el)=>{db.cfg[k]=v;save();
+ if(k!='th'||!el||!document.startViewTransition||matchMedia('(prefers-reduced-motion:reduce)').matches)return applyCfg();
+ const r=el.getBoundingClientRect(),x=r.left+r.width/2,y=r.top+r.height/2,R=Math.hypot(Math.max(x,innerWidth-x),Math.max(y,innerHeight-y));
+ document.startViewTransition(applyCfg).ready.then(()=>document.documentElement.animate({clipPath:[`circle(0 at ${x}px ${y}px)`,`circle(${R}px at ${x}px ${y}px)`]},{duration:650,easing:'ease-in-out',pseudoElement:'::view-transition-new(root)'}))};
+A.wipe=()=>{if(confirm('Delete every set and setting? This cannot be undone. Export a backup first if you are unsure.')){try{localStorage.removeItem('ss1')}catch(e){}location.hash='#/';location.reload()}};
+const applyCfg=()=>{const c=db.cfg,d=document.documentElement;if(c.th=='light'||c.th=='dark')d.dataset.theme=c.th;else delete d.dataset.theme;d.style.setProperty('--fz',{s:'1.3rem',m:'1.7rem',l:'2.2rem'}[c.fs]||'1.7rem');document.body.classList.toggle('noanim',!c.anim)};
+
+/* FILES, SHARING, MISC */
+A.exp=id=>{const sets=id?[getS(id)]:db.sets;if(!id){db.bk=Date.now();save()}dl(id?getS(id).title.replace(/\W+/g,'_')+'.json':'inkling-backup.json',JSON.stringify({app:NAME,v:1,sets}))};
+let lastId=null;
+const AIP=`You are a flashcard maker for a study website called Inkling. I will give you notes, a chapter, a vocabulary list, or just a topic. Turn it into a flashcard set.
+
+Rules:
+- Reply with ONE JSON code block and nothing else: no introduction, no explanation, and no text after it.
+- Use exactly this format:
+{"title":"Short set title","folder":"","lang":"","cards":[{"term":"...","definition":"..."}]}
+- "title": a short, clear name for the set. "folder": a subject such as Biology, or leave it empty. "lang": the language code for reading the terms aloud (for example es-ES for Spanish or fr-FR for French), or leave it empty for English.
+- Each card tests ONE idea. Keep terms short (a word, a name, or a brief question) and definitions clear and under about 25 words.
+- Use only facts from the material I give you. If I only give a topic, use accurate, well-known facts and skip anything you are unsure about.
+- No duplicate cards. Keep the language of my material. Use plain text only inside the values (no markdown and no line breaks), and escape any double quotes with a backslash.
+- Make as many cards as the material needs, up to 50, unless I ask for a specific number.
+- If my message is too short or unclear to make good cards, ask me one question instead of guessing.
+
+My material follows this message. If there is no material after these instructions, reply with only: Send me your notes or a topic.`;
+function aiParse(t){t=t.trim().replace(/^```(?:json)?/i,'').replace(/```$/,'').trim();try{return JSON.parse(t)}catch(e){}const a=t.indexOf('{'),b=t.lastIndexOf('}');if(a>=0&&b>a)try{return JSON.parse(t.slice(a,b+1))}catch(e){}return null}
+function addSets(j){let n=0;(Array.isArray(j)?j:j&&j.sets?j.sets:[j]).forEach(s=>{if(!s||!Array.isArray(s.cards))return;
+ if(s.id&&s.cards.every(c=>c&&typeof c=='object'&&c.id)){const i=db.sets.findIndex(x=>x.id==s.id);if(i>=0)db.sets[i]=s;else db.sets.push(s);lastId=s.id;n++;return}
+ const cs=s.cards.map(c=>Array.isArray(c)?[c[0],c[1]]:[c&&(c.t??c.term??c.front??c.question),c&&(c.d??c.definition??c.back??c.answer)]).map(([t,d])=>[String(t??''),String(d??'')]).filter(p=>p[0]||p[1]);
+ if(cs.length){const x=mk(s.title||s.name,cs,s.folder||'',s.lang||'');db.sets.push(x);lastId=x.id;n++}});return n}
+A.file=inp=>{const f=inp.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{let n=0;const j=aiParse(r.result);
+ if(j)n=addSets(j);else{const cs=parse(r.result);if(cs.length){db.sets.push(mk(f.name.replace(/\.\w+$/,''),cs));n++}}
+ save();alert(n?'Imported '+n+' set(s).':'Nothing could be imported from that file.');render()};r.readAsText(f);inp.value=''};
+A.aiGo=()=>{const t=$('#aiin').value,j=aiParse(t);let n=j?addSets(j):0;if(!n){const cs=parse(t);if(cs.length){const x=mk('AI set',cs);db.sets.push(x);lastId=x.id;n=1}}
+ if(!n)return alert('No cards were found in that text. Make sure you pasted the full reply from the AI.');save();location.hash='#/s/'+lastId};
+A.cp=()=>{const ta=$('#pr');(navigator.clipboard?navigator.clipboard.writeText(AIP):Promise.reject()).then(()=>alert('Prompt copied.'),()=>{ta.select();try{document.execCommand('copy');alert('Prompt copied.')}catch(e){}})};
+function aiPage(){return`<a href="#/">← Back</a><h1>Make cards with AI</h1>
+<p class=mu>Use any AI chatbot, such as ChatGPT, Claude, or Gemini, to turn your notes into a set.</p>
+<h2>1. Copy this prompt</h2><textarea id=pr rows=9 readonly aria-label="Prompt for your AI chatbot">${esc(AIP)}</textarea><div class=row><button class=p onclick="A.cp()">Copy prompt</button></div>
+<h2>2. Give it your material</h2><p>Paste the prompt into the chatbot, then add your notes, a chapter, a vocabulary list, or just a topic. You can also ask for a number of cards.</p>
+<h2>3. Paste the reply here</h2><textarea id=aiin rows=8 placeholder="Paste the AI's full reply here" aria-label="Reply from the AI"></textarea>
+<div class=row><button class=p onclick="A.aiGo()">Create set</button></div>
+<p class=mu>Prefer a file? Save the reply as a .json file and use Import file on the home page.</p>`}
+
+A.share=id=>{const S=getS(id),o={title:S.title,folder:S.folder,lang:S.lang,cards:S.cards.map(c=>[c.t,c.d])};
+ const b=btoa(unescape(encodeURIComponent(JSON.stringify(o)))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,''),u=location.href.split('#')[0]+'#/i/'+b;
+ if(u.length>6000)alert('This set is large, so the link may not work everywhere. Use Export for big sets.');
+ (navigator.clipboard?navigator.clipboard.writeText(u):Promise.reject()).then(()=>alert('Link copied.'),()=>prompt('Copy this link:',u))};
+function imp(b){let o;try{o=JSON.parse(decodeURIComponent(escape(atob(b.replace(/-/g,'+').replace(/_/g,'/')))));if(!Array.isArray(o.cards))throw 0;o.cards=o.cards.map(c=>[String(c[0]),String(c[1])])}catch(e){return'<a href="#/">← Home</a><p>That share link is not valid.</p>'}
+ ST={k:'im',o};return`<a href="#/">← Home</a><h1>Add shared set?</h1><p><b>${esc(o.title)}</b>, ${o.cards.length} cards</p><button class=p onclick="A.addIm()">Add to my sets</button>`}
+A.addIm=()=>{const o=ST.o,s=mk(o.title,o.cards,o.folder||'',o.lang||'');db.sets.push(s);save();location.hash='#/s/'+s.id};
+A.print=id=>{const S=getS(id);$('#pv').innerHTML=`<h1>${esc(S.title)}</h1><table>${S.cards.map(c=>`<tr><td>${esc(c.t)}</td><td>${esc(c.d)}</td></tr>`).join('')}</table>`;print()};
+A.rm=id=>{if(confirm('Delete this set? This cannot be undone.')){db.sets=db.sets.filter(s=>s.id!=id);save();location.hash='#/';render()}};
+A.star=(sid,cid,b)=>{const c=getS(sid).cards.find(x=>x.id==cid);c.s=!c.s;save();b.innerHTML=ic('st',c.s);b.setAttribute('aria-pressed',!!c.s)};
+A.say=(sid,cid)=>{const S=getS(sid),c=S.cards.find(x=>x.id==cid);say(c.t+'. '+c.d,S.lang)};
+
+
+function render(){clearInterval(tmr);ST={};const p=location.hash.slice(1).split('/'),r=p[1],id=p[2],m=p[3],S=getS(id);if(r!='e')ED=null;
+ draw(r=='s'&&S?(m?study(S,m):setV(S)):r=='e'?edit(id):r=='i'?imp(id):r=='settings'?settings():r=='ai'?aiPage():home());scrollTo(0,0);if(ST.k=='ma')A.tmr()}
+addEventListener('hashchange',render);applyCfg();render();
+</script></body></html>
